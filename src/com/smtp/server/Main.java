@@ -33,6 +33,7 @@ public class Main {
 
         boolean stop = false;
         while (connexions.size() < NB_CONNEXION_MAX && !stop) {
+            System.out.println(MailboxUtils.receiverExists("matthieu@mail.com"));
             Socket socket = serverSocket.accept();
             Connection connection = new Connection(socket);
             connexions.add(connection);

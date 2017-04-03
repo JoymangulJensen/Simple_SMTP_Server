@@ -9,4 +9,18 @@ public class Mail {
     private String sender;
     private List<String> receiver;
 
+    public String getSender() {
+        return sender;
+    }
+
+    public List<String> getReceiver() {
+        return receiver;
+    }
+
+    public Mail(String mail) {
+    }
+
+    public void build(String mail) {
+
+    }
 }
