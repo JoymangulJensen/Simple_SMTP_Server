@@ -87,4 +87,9 @@ class Message {
             return new ArrayList<>();
         return Arrays.asList(argComplet.split(" "));
     }
+
+    public String getMail() throws IndexOutOfBoundsException{
+        String[] email = argComplet.split("<");
+        return email[1].replace(">", "");
+    }
 }

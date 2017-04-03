@@ -1,5 +1,6 @@
 package com.smtp.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,10 +18,22 @@ public class Mail {
         return receiver;
     }
 
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public void setReceiver(List<String> receiver) {
+        this.receiver = receiver;
+    }
+
+    public void addReceiver(String receiver)
+    {
+        this.receiver.add(receiver);
+    }
+
     public Mail(String mail) {
+        this.setReceiver(new ArrayList<>());
+        this.setSender("");
     }
 
-    public void build(String mail) {
-
-    }
 }

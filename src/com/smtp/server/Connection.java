@@ -8,8 +8,6 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.smtp.server.Command.EHLO;
-
 /**
  * Created by p1508754 on 03/04/2017.
  */
@@ -37,8 +35,10 @@ public class Connection implements Runnable {
             case OK:
                 break;
             case EHLO:
+                this.send(ResponseGenerator.getHelloReply());
                 break;
             case MAIL:
+                ResponseGenerator.getMailReply(message);
                 break;
             case RCPT:
                 break;
@@ -67,7 +67,7 @@ public class Connection implements Runnable {
     }
 
     private void init() {
-        send(new Message(Command.OK));
+        send(ResponseGenerator.serverReady());
     }
 
     /**
