@@ -7,18 +7,24 @@ package com.smtp.server;
 public class ResponseGenerator {
     private static final String SERVER_DOMAIN = "polytech.ipc";
 
-    public static Message serverReady() {
+    private Transaction transaction;
+
+    public ResponseGenerator() {
+        transaction = new Transaction();
+    }
+
+    public Message serverReady() {
         StringBuilder stringBuilder = new StringBuilder("220 ")
                 .append(SERVER_DOMAIN)
                 .append(" Simple Mail Transfer Protocol");
         return new Message(stringBuilder.toString());
     }
 
-    public static Message getHelloReply() {
+    public Message getHelloReply() {
         return new Message(Command.OK, SERVER_DOMAIN);
     }
 
-    public static Message getMailReply(Message msgReceive, Transaction transaction) {
+    public Message getMailReply(Message msgReceive) {
         String sender = msgReceive.getMail();
         if (UserUtils.userExists(sender)) {
             transaction.setSender(sender);
@@ -28,7 +34,7 @@ public class ResponseGenerator {
         }
     }
 
-    public static Message getRecipientReply(Message msgReceive, Transaction transaction) {
+    public Message getRecipientReply(Message msgReceive) {
         String recipient = msgReceive.getMail();
         if(MailboxUtils.receiverExists(recipient))
         {
@@ -39,14 +45,25 @@ public class ResponseGenerator {
         }
     }
 
-    public static Message getDataReply(Transaction transaction){
+    public Message getDataReply(){
         if(transaction.isSenderValid() && transaction.isRecipientValid())
             return new Message(Command.GETMAIL, "Start Mail input end with <CR><LF>.<CR><LF>");
         return new Message(Command.ERROR);
     }
 
-    public static Message getMailContentReply(Message msgReceive, Transaction transaction) {
+    public Message getMailContentReply(Message msgReceive) {
         transaction.setMailContent(msgReceive.toString());
+        if(transaction.saveMail())
+            return new Message(Command.OK);
+        return new Message(Command.ERROR);
+    }
+
+    public Message getRsetReply() {
+        transaction.reset();
         return new Message(Command.OK);
+    }
+
+    public Message getQuitReply() {
+        return new Message(Command.QUITCODE, "Service closing transmission channel");
     }
 }

@@ -19,6 +19,7 @@ public class Connection implements Runnable {
     private boolean stop = false;
     private List<Message> messagesSent = new ArrayList<>();
     private Transaction transaction;
+    private ResponseGenerator responseGenerator;
 
     Connection(Socket socket) throws IOException {
         clientSocket = socket;
@@ -37,23 +38,31 @@ public class Connection implements Runnable {
             case OK:
                 break;
             case EHLO:
-                this.send(ResponseGenerator.getHelloReply());
+                this.send(responseGenerator.getHelloReply());
                 break;
             case MAIL:
-                this.send(ResponseGenerator.getMailReply(message, this.transaction));
+                this.send(responseGenerator.getMailReply(message));
                 break;
             case RCPT:
-                this.send(ResponseGenerator.getRecipientReply(message, this.transaction));
+                this.send(responseGenerator.getRecipientReply(message));
                 break;
             case RST:
+                this.send(responseGenerator.getRsetReply());
+                this.transaction = new Transaction();
                 break;
             case DATA:
-                //this.send(ResponseGenerator.getDataReply(this.transaction));
-                Message mail = receive(); // This temporary for testing with putty for client
-                mail = receive();
-                System.out.println("fwf " + mail);
+                Message reply = responseGenerator.getDataReply();
+                this.send(reply);
+                if(reply.getCommand() == Command.OK)
+                {
+                    Message mail = receive(); // This temporary for testing with putty for client
+                    mail = receive();
+                    this.send(responseGenerator.getMailContentReply(mail));
+                }
                 break;
             case QUIT:
+                this.send(responseGenerator.getQuitReply());
+                this.stop("QUIT");
                 break;
             case ERROR:
                 break;
@@ -74,8 +83,8 @@ public class Connection implements Runnable {
     }
 
     private void init() {
-        send(ResponseGenerator.serverReady());
-        this.transaction = new Transaction();
+        responseGenerator = new ResponseGenerator();
+        send(responseGenerator.serverReady());
     }
 
     /**

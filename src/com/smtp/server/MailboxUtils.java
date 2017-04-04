@@ -11,6 +11,8 @@ public class MailboxUtils {
             .append(System.getProperty("user.home"))
             .append("/IPC/mailboxes/").toString();
 
+    public final static String MAIL_EXTENSION = ".eml";
+
 
     public static Boolean receiverExists(String receiver) {
         File[] directories = new File(MAILBOX_DIRECTORY).listFiles(File::isDirectory);
