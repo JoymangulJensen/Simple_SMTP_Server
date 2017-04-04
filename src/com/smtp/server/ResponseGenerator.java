@@ -1,7 +1,8 @@
 package com.smtp.server;
 
 /**
- * Created by seljo on 4/3/2017.
+ * Simple_SMTP_Server
+ * Created by JOYMANGUL Jensen Selwyn on 4/3/2017.
  */
 public class ResponseGenerator {
     private static final String SERVER_DOMAIN = "polytech.ipc";
@@ -19,9 +20,14 @@ public class ResponseGenerator {
         return new Message(Command.OK, SERVER_DOMAIN);
     }
 
-    public static Message getMailReply(Message msgReceive)
+    public static Message getMailReply(Message msgReceive, Transaction transaction)
     {
-        System.out.println(msgReceive.getMail());
-        return new Message(Command.OK);
+        String sender = msgReceive.getMail();
+        if (UserUtils.userExists(sender)) {
+            transaction.setSender(sender);
+            return new Message(Command.OK);
+        } else {
+            return new Message(Command.ERROR, "No such user here");
+        }
     }
 }

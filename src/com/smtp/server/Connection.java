@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by p1508754 on 03/04/2017.
+ * Simple_SMTP_Server
+ * Created by JOYMANGUL Jensen Selwyn on 03/04/2017.
  */
 public class Connection implements Runnable {
     private Socket clientSocket;
@@ -17,6 +18,7 @@ public class Connection implements Runnable {
     private OutputStream os;
     private boolean stop = false;
     private List<Message> messagesSent = new ArrayList<>();
+    private Transaction transaction;
 
     Connection(Socket socket) throws IOException {
         clientSocket = socket;
@@ -38,7 +40,7 @@ public class Connection implements Runnable {
                 this.send(ResponseGenerator.getHelloReply());
                 break;
             case MAIL:
-                ResponseGenerator.getMailReply(message);
+                this.send(ResponseGenerator.getMailReply(message, this.transaction));
                 break;
             case RCPT:
                 break;
@@ -68,6 +70,7 @@ public class Connection implements Runnable {
 
     private void init() {
         send(ResponseGenerator.serverReady());
+        this.transaction = new Transaction();
     }
 
     /**

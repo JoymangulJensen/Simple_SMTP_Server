@@ -3,8 +3,8 @@ package com.smtp.server;
 import java.util.HashSet;
 
 /**
- * Created by Gaetan on 05/03/2017.
- * List of commands
+ * Simple_SMTP_Server
+ * Created by JOYMANGUL Jensen Selwyn on 03/04/2017.
  */
 public enum Command {
 
@@ -20,10 +20,6 @@ public enum Command {
 
     private final String value;
 
-    public String getValue() {
-        return value;
-    }
-
     Command(String value) {
         this.value = value;
     }
@@ -35,5 +31,9 @@ public enum Command {
             values.add(c.name());
         }
         return values;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

@@ -10,18 +10,11 @@ import java.util.List;
  */
 class Message {
 
+    static final int BUFFER_MAX_SIZE = 1024;
     private Command command = Command.DEFAULT;
-
-    Command getCommand() {return command;}
-
     private String argComplet = "";
 
     private List<String> args = new ArrayList<>();
-
-    public String getArgComplet() {return argComplet;}
-
-    static final int BUFFER_MAX_SIZE = 1024;
-
 
     Message(byte[] message) {
         this(new String(message));
@@ -31,6 +24,7 @@ class Message {
         this.build(fullMesage);
     }
 
+
     Message(Command command, String arg) {
         this(command);
         this.argComplet = arg;
@@ -38,6 +32,14 @@ class Message {
 
     Message(Command command) {
         this.command = command;
+    }
+
+    Command getCommand() {
+        return command;
+    }
+
+    public String getArgComplet() {
+        return argComplet;
     }
 
     private void build(String fullMessage) {
@@ -88,8 +90,13 @@ class Message {
         return Arrays.asList(argComplet.split(" "));
     }
 
-    public String getMail() throws IndexOutOfBoundsException{
-        String[] email = argComplet.split("<");
-        return email[1].replace(">", "");
+    public String getMail() {
+        try {
+            String[] email = argComplet.split("<");
+            return email[1].replace(">", "");
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        }
+
     }
 }

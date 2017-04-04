@@ -3,7 +3,8 @@ package com.smtp.server;
 import java.io.File;
 
 /**
- * Created by p1508754 on 03/04/2017.
+ * Simple_SMTP_Server
+ * Created by JOYMANGUL Jensen Selwyn on 03/04/2017.
  */
 public class MailboxUtils {
     public final static String MAILBOX_DIRECTORY = new StringBuilder()

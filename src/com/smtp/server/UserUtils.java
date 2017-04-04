@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * Created by p1508754 on 03/04/2017.
+ * Simple_SMTP_Server
+ * Created by JOYMANGUL Jensen Selwyn on 03/04/2017.
  */
 public class UserUtils {
     private static final String USERS_FILE_PATH = new StringBuilder()
