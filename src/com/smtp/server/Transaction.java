@@ -9,12 +9,12 @@ import java.util.List;
  */
 public class Transaction {
     private String sender;
-    private List<String> receivers;
+    private List<String> recipient;
     private String mailContent;
 
     public Transaction() {
         this.setSender("");
-        this.setReceivers(new ArrayList<>());
+        this.setRecipient(new ArrayList<>());
         this.setMailContent("");
     }
 
@@ -26,12 +26,12 @@ public class Transaction {
         this.sender = sender;
     }
 
-    public List<String> getReceivers() {
-        return receivers;
+    public List<String> getRecipient() {
+        return recipient;
     }
 
-    public void setReceivers(List<String> receivers) {
-        this.receivers = receivers;
+    public void setRecipient(List<String> recipient) {
+        this.recipient = recipient;
     }
 
     public String getMailContent() {
@@ -42,7 +42,15 @@ public class Transaction {
         this.mailContent = mailContent;
     }
 
-    public void addReceiver(String reseive) {
-        this.getReceivers().add(reseive);
+    public void addRecipient(String recipient) {
+        this.getRecipient().add(recipient);
+    }
+
+    public boolean isSenderValid() {
+        return !this.getSender().equals("");
+    }
+
+    public boolean isRecipientValid() {
+        return !this.getRecipient().isEmpty();
     }
 }

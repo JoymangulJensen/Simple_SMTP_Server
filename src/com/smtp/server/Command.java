@@ -16,6 +16,7 @@ public enum Command {
     DATA("DATA"),
     QUIT("QUIT"),
     ERROR("550"),
+    GETMAIL("354"),
     DEFAULT("");
 
     private final String value;

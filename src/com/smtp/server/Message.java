@@ -20,8 +20,8 @@ class Message {
         this(new String(message));
     }
 
-    public Message(String fullMesage) {
-        this.build(fullMesage);
+    public Message(String fullMessage) {
+        this.build(fullMessage);
     }
 
 

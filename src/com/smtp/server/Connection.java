@@ -43,10 +43,15 @@ public class Connection implements Runnable {
                 this.send(ResponseGenerator.getMailReply(message, this.transaction));
                 break;
             case RCPT:
+                this.send(ResponseGenerator.getRecipientReply(message, this.transaction));
                 break;
             case RST:
                 break;
             case DATA:
+                //this.send(ResponseGenerator.getDataReply(this.transaction));
+                Message mail = receive(); // This temporary for testing with putty for client
+                mail = receive();
+                System.out.println("fwf " + mail);
                 break;
             case QUIT:
                 break;
