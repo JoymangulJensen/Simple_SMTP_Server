@@ -21,6 +21,7 @@ public class ResponseGenerator {
     }
 
     public Message getHelloReply() {
+        System.out.println("heelo");
         return new Message(Command.OK, SERVER_DOMAIN);
     }
 

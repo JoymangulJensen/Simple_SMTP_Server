@@ -38,6 +38,7 @@ public class Connection implements Runnable {
             case OK:
                 break;
             case EHLO:
+                System.out.println("connect");
                 this.send(responseGenerator.getHelloReply());
                 break;
             case MAIL:
@@ -53,10 +54,11 @@ public class Connection implements Runnable {
             case DATA:
                 Message reply = responseGenerator.getDataReply();
                 this.send(reply);
-                if(reply.getCommand() == Command.OK)
+                System.out.println("GOOOOOOOOOO " + reply.getCommand());
+                if (reply.getCommand() == Command.GETMAIL)
                 {
+                    System.out.println("DATA OKKKKKK");
                     Message mail = receive(); // This temporary for testing with putty for client
-                    mail = receive();
                     this.send(responseGenerator.getMailContentReply(mail));
                 }
                 break;

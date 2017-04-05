@@ -8,7 +8,7 @@ import java.util.HashSet;
  */
 public enum Command {
 
-    OK("250 OK"),
+    OK("250"),
     EHLO("EHLO"),
     MAIL("MAIL"),
     RCPT("RCPT"),
