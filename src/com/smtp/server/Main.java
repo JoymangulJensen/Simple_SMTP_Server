@@ -1,5 +1,8 @@
 package com.smtp.server;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,7 +13,7 @@ public class Main {
 
     private static final int NB_CONNEXION_MAX = 10;
 
-    private static final int SERVER_PORT = 1096;
+    private static final int SERVER_PORT = 1097;
 
     private static List<Connection> connexions = new ArrayList<>();
 
@@ -28,12 +31,17 @@ public class Main {
      * @throws IOException in case of exception
      */
     private static void launch() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
-        System.out.println("Server Running on port " + serverSocket.getLocalPort());
+        SSLServerSocket secureSocket = null;
+        SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+        secureSocket = (SSLServerSocket) factory.createServerSocket(SERVER_PORT);
+        secureSocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
+
+        System.out.println("Server Running on port " + secureSocket.getLocalPort());
 
         boolean stop = false;
         while (connexions.size() < NB_CONNEXION_MAX && !stop) {
-            Socket socket = serverSocket.accept();
+            SSLSocket socket = null;
+            socket = (SSLSocket) secureSocket.accept();
             Connection connection = new Connection(socket);
             connexions.add(connection);
             System.out.println("New Connexion n°" + connexions.size() + " " + socket);
@@ -41,7 +49,7 @@ public class Main {
         }
 
         if (stop) {
-            serverSocket.close();
+            secureSocket.close();
         }
     }
 }
